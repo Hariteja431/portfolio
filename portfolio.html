@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hari Teja Jada - Web Developer & AI Enthusiast</title>
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/3rp9qS3w/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        /* Custom Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F9FAFB;
+            color: #4B5563;
+        }
+        .font-jakarta {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #2563EB, #1E3A8A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .nav-link-underline {
+            position: relative;
+            display: inline-block;
+        }
+        .nav-link-underline::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #2563EB;
+            transition: width 0.3s ease-in-out;
+        }
+        .nav-link-underline:hover::after {
+            width: 100%;
+        }
+        .sticky-nav {
+            background-color: rgba(249, 250, 251, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid #E5E7EB;
+        }
+        #progress-bar {
+            height: 3px;
+            background-color: #2563EB;
+            width: 0%;
+            position: fixed;
+            top: 64px; /* Adjust based on nav height */
+            left: 0;
+            z-index: 50;
+            transition: width 0.1s linear;
+        }
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+        .project-card:hover .project-image {
+            transform: scale(1.05);
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Particle Animation */
+        #particle-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(37, 99, 235, 0.3);
+            animation: float 25s infinite linear;
+        }
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-100vh) translateX(50vw); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+        /* New card styles */
+        .skill-card {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 1px solid #E5E7EB;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+        }
+        .info-card {
+             background-color: white;
+            border-radius: 1rem;
+            padding: 2.5rem;
+            border: 1px solid #E5E7EB;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Progress Bar -->
+    <div id="progress-bar"></div>
+
+    <!-- Header -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold font-jakarta text-gray-800">HTJ</a>
+            <div class="hidden lg:flex items-center space-x-8">
+                <a href="#about" class="nav-link-underline text-gray-600 hover:text-blue-600">About</a>
+                <a href="#skills" class="nav-link-underline text-gray-600 hover:text-blue-600">Skills</a>
+                <a href="#experience" class="nav-link-underline text-gray-600 hover:text-blue-600">Experience</a>
+                <a href="#projects" class="nav-link-underline text-gray-600 hover:text-blue-600">Projects</a>
+                <a href="#hackathons" class="nav-link-underline text-gray-600 hover:text-blue-600">Hackathons</a>
+                <a href="#contact" class="nav-link-underline text-gray-600 hover:text-blue-600">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="lg:hidden focus:outline-none">
+                <i data-feather="menu" class="h-6 w-6 text-gray-800"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden fixed inset-0 bg-gray-800/20 backdrop-blur-sm z-50 lg:hidden">
+        <div class="absolute top-0 right-0 h-full w-64 bg-white shadow-lg p-8">
+            <button id="close-mobile-menu" class="absolute top-6 right-6">
+                <i data-feather="x" class="h-6 w-6 text-gray-600"></i>
+            </button>
+            <div class="flex flex-col space-y-6 mt-10">
+                <a href="#about" class="mobile-nav-link text-gray-700 hover:text-blue-600 text-lg">About</a>
+                <a href="#skills" class="mobile-nav-link text-gray-700 hover:text-blue-600 text-lg">Skills</a>
+                <a href="#experience" class="mobile-nav-link text-gray-700 hover:text-blue-600 text-lg">Experience</a>
+                <a href="#projects" class="mobile-nav-link text-gray-700 hover:text-blue-600 text-lg">Projects</a>
+                <a href="#hackathons" class="mobile-nav-link text-gray-700 hover:text-blue-600 text-lg">Hackathons</a>
+                <a href="#contact" class="mobile-nav-link text-gray-700 hover:text-blue-600 text-lg">Contact</a>
+            </div>
+        </div>
+    </div>
+
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="relative min-h-screen flex items-center bg-gradient-to-br from-blue-50 to-gray-100 overflow-hidden">
+            <div id="particle-container"></div>
+            <div class="container mx-auto px-6 py-24 md:py-32">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="flex justify-center md:justify-start">
+                        <div class="glassmorphism p-4 rounded-full shadow-2xl shadow-blue-500/10">
+                            <img src="https://i.ibb.co/NQsjkf7/IMG-20250604-WA0049.jpg" alt="A portrait of Hari Teja Jada" class="w-64 h-64 md:w-80 md:h-80 rounded-full object-cover border-4 border-white">
+                        </div>
+                    </div>
+                    <div class="text-center md:text-left">
+                        <h1 class="text-5xl md:text-7xl font-extrabold font-jakarta tracking-tight gradient-text">Hari Teja Jada</h1>
+                        <p class="mt-4 text-lg md:text-xl font-medium text-gray-700">Web Development & AI Enthusiast | B.Tech Student</p>
+                        <p class="mt-6 text-xl md:text-2xl text-gray-600 max-w-xl mx-auto md:mx-0">I build smart, innovative digital solutions powered by AI, crafted with purpose.</p>
+                        <div class="mt-4 h-8 text-blue-600 font-semibold text-lg">
+                            <span id="typing-animation"></span>
+                        </div>
+                        <div class="mt-8 flex justify-center md:justify-start space-x-4">
+                            <a href="#projects" class="bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">View My Work</a>
+                            <a href="https://drive.google.com/uc?export=download&id=1AW1tQT3KIWQ285HLtbopuRSayKH-1qzz" class="bg-white text-gray-700 font-semibold px-8 py-3 rounded-lg shadow-lg border border-gray-200 hover:bg-gray-100 transition duration-300 transform hover:scale-105">Download Resume</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Me -->
+        <section id="about" class="py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold font-jakarta text-gray-800">About Me</h2>
+                    <p class="mt-2 text-lg text-gray-500">A little bit about my journey so far.</p>
+                </div>
+                <div class="max-w-4xl mx-auto grid md:grid-cols-3 gap-8 items-center fade-in">
+                    <div class="md:col-span-2 p-8 rounded-2xl border border-gray-200 bg-gray-50/50">
+                        <p class="mb-4">Motivated and versatile B.Tech student with hands-on experience in <strong>web development</strong>, <strong>AI-based projects</strong>, and hackathons. Passionate about building impactful digital products with a solid foundation in <strong>problem-solving</strong>.</p>
+                        <p>Currently exploring full-stack development, <strong>agentic AI</strong>, and <strong>generative AI</strong> to bridge innovation with seamless user experiences. Eager to contribute to dynamic tech environments and grow into a product-focused role.</p>
+                    </div>
+                    <div class="flex flex-col space-y-6 items-center md:items-start">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-blue-100 p-3 rounded-full"><i data-feather="cpu" class="text-blue-600"></i></div>
+                            <span class="font-semibold">AI & Tech</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-green-100 p-3 rounded-full"><i data-feather="bar-chart-2" class="text-green-600"></i></div>
+                            <span class="font-semibold">Problem Solving</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-purple-100 p-3 rounded-full"><i data-feather="users" class="text-purple-600"></i></div>
+                            <span class="font-semibold">Leadership</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills & Expertise -->
+        <section id="skills" class="py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold font-jakarta text-gray-800">Skills & Expertise</h2>
+                    <div class="inline-block w-20 h-1 bg-blue-600 rounded-full mt-4"></div>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 mb-16 fade-in">
+                    <!-- Web & Programming Card -->
+                    <div class="skill-card">
+                        <div class="flex items-center mb-4">
+                            <i data-feather="code" class="text-blue-600 mr-3"></i>
+                            <h3 class="text-xl font-semibold text-gray-800">Web & Programming</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-gray-100 text-gray-700 text-sm font-medium px-3 py-1 rounded-md">HTML</span>
+                            <span class="bg-gray-100 text-gray-700 text-sm font-medium px-3 py-1 rounded-md">CSS</span>
+                            <span class="bg-gray-100 text-gray-700 text-sm font-medium px-3 py-1 rounded-md">JavaScript</span>
+                            <span class="bg-gray-100 text-gray-700 text-sm font-medium px-3 py-1 rounded-md">Python</span>
+                        </div>
+                    </div>
+                    <!-- AI & Technology Card -->
+                    <div class="skill-card">
+                        <div class="flex items-center mb-4">
+                            <i data-feather="cpu" class="text-blue-600 mr-3"></i>
+                            <h3 class="text-xl font-semibold text-gray-800">AI & Technology</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-gray-100 text-gray-700 text-sm font-medium px-3 py-1 rounded-md">Generative AI</span>
+                            <span class="bg-gray-100 text-gray-700 text-sm font-medium px-3 py-1 rounded-md">Agentic AI</span>
+                            <span class="bg-gray-100 text-gray-700 text-sm font-medium px-3 py-1 rounded-md">AI Agents</span>
+                        </div>
+                    </div>
+                    <!-- Soft Skills Card -->
+                    <div class="skill-card">
+                        <div class="flex items-center mb-4">
+                            <i data-feather="users" class="text-blue-600 mr-3"></i>
+                            <h3 class="text-xl font-semibold text-gray-800">Soft Skills</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-gray-100 text-gray-700 text-sm font-medium px-3 py-1 rounded-md">Problem Solving</span>
+                            <span class="bg-gray-100 text-gray-700 text-sm font-medium px-3 py-1 rounded-md">Team Leadership</span>
+                            <span class="bg-gray-100 text-gray-700 text-sm font-medium px-3 py-1 rounded-md">Multitasking</span>
+                            <span class="bg-gray-100 text-gray-700 text-sm font-medium px-3 py-1 rounded-md">Community Building</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mb-16 fade-in">
+                     <h2 class="text-3xl font-bold font-jakarta text-gray-800">Certifications</h2>
+                     <div class="inline-block w-20 h-1 bg-blue-600 rounded-full mt-4"></div>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 fade-in">
+                    <div class="skill-card">
+                        <div class="flex items-center mb-2">
+                            <i data-feather="shield" class="text-blue-600 mr-3"></i>
+                            <h3 class="text-lg font-semibold text-gray-800">Google Cyber Security</h3>
+                        </div>
+                        <p class="text-gray-500">Google</p>
+                        <p class="text-sm text-gray-400 mt-1">2024-07</p>
+                    </div>
+                    <div class="skill-card">
+                        <div class="flex items-center mb-2">
+                            <i data-feather="award" class="text-blue-600 mr-3"></i>
+                            <h3 class="text-lg font-semibold text-gray-800">Python (Basic)</h3>
+                        </div>
+                        <p class="text-gray-500">HackerRank</p>
+                        <p class="text-sm text-gray-400 mt-1">Jul 2025</p>
+                    </div>
+                    <div class="skill-card">
+                        <div class="flex items-center mb-2">
+                            <i data-feather="database" class="text-blue-600 mr-3"></i>
+                            <h3 class="text-lg font-semibold text-gray-800">Python and SQL for Data Science</h3>
+                        </div>
+                        <p class="text-gray-500">Scaler Topics</p>
+                        <p class="text-sm text-gray-400 mt-1">Aug 2025</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience -->
+        <section id="experience" class="py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold font-jakarta text-gray-800">Work Experience</h2>
+                    <div class="inline-block w-20 h-1 bg-blue-600 rounded-full mt-4"></div>
+                </div>
+                <div class="max-w-2xl mx-auto fade-in">
+                    <div class="info-card">
+                        <div class="inline-block bg-blue-100 p-4 rounded-full mb-4">
+                            <i data-feather="briefcase" class="w-8 h-8 text-blue-600"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800">Growth Manager</h3>
+                        <p class="mt-1 text-lg text-gray-600">Prepinsta Prime Campus Club</p>
+                        <div class="mt-2 flex justify-center items-center text-gray-500">
+                            <i data-feather="map-pin" class="w-4 h-4 mr-2"></i>
+                            <span>Remote</span>
+                        </div>
+                        <div class="mt-2 flex justify-center items-center text-gray-400 text-sm">
+                            <i data-feather="calendar" class="w-4 h-4 mr-2"></i>
+                            <span>May 2024 – Present</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Education -->
+        <section id="education" class="py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold font-jakarta text-gray-800">Education</h2>
+                    <div class="inline-block w-20 h-1 bg-blue-600 rounded-full mt-4"></div>
+                </div>
+                <div class="max-w-2xl mx-auto fade-in">
+                     <div class="info-card">
+                        <div class="inline-block bg-blue-100 p-4 rounded-full mb-4">
+                            <i data-feather="award" class="w-8 h-8 text-blue-600"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800">Bachelor of Technology: Electronics And Communication Engineering</h3>
+                        <p class="mt-1 text-lg text-gray-600">Godavari Institute of Engineering And Technology</p>
+                        <div class="mt-2 flex justify-center items-center text-gray-500">
+                            <i data-feather="map-pin" class="w-4 h-4 mr-2"></i>
+                            <span>Rajahmundry, East Godavari</span>
+                        </div>
+                        <div class="mt-2 flex justify-center items-center text-gray-400 text-sm">
+                            <i data-feather="calendar" class="w-4 h-4 mr-2"></i>
+                            <span>2022 – 2026</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects -->
+        <section id="projects" class="py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold font-jakarta text-gray-800">Projects Showcase</h2>
+                    <p class="mt-2 text-lg text-gray-500">Some of the things I've built.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 fade-in">
+                    <!-- Project Card 1 -->
+                    <div class="project-card group relative rounded-lg overflow-hidden shadow-lg border border-gray-200">
+                        <img src="https://i.postimg.cc/6pBWDmRL/Whats-App-Image-2025-08-16-at-03-39-13-140f2161.jpg" alt="Screenshot of the Real-Time SIP Calculator project" class="project-image w-full h-64 object-cover transition-transform duration-300">
+                        <div class="project-overlay absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center opacity-0 transition-opacity duration-300">
+                            <a href="https://sip-visualizer-smooth-flows.lovable.app" target="_blank" class="text-white text-lg font-semibold border-2 border-white px-6 py-2 rounded-full hover:bg-white hover:text-black transition">View Project &rarr;</a>
+                        </div>
+                        <div class="p-6 bg-white">
+                            <h3 class="text-xl font-semibold text-gray-800">Real-Time SIP Calculator</h3>
+                            <p class="mt-2 text-gray-600">An AI-assisted Systematic Investment Plan calculator.</p>
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">AI</span>
+                                <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Finance</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Project Card 2 -->
+                    <div class="project-card group relative rounded-lg overflow-hidden shadow-lg border border-gray-200">
+                        <img src="https://i.postimg.cc/sxSfrFwK/Whats-App-Image-2025-08-16-at-03-39-05-08a34b63.jpg" alt="Screenshot of the ConvoCraft project" class="project-image w-full h-64 object-cover transition-transform duration-300">
+                        <div class="project-overlay absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center opacity-0 transition-opacity duration-300">
+                            <a href="https://convo-craft-live.vercel.app/" target="_blank" class="text-white text-lg font-semibold border-2 border-white px-6 py-2 rounded-full hover:bg-white hover:text-black transition">View Project &rarr;</a>
+                        </div>
+                        <div class="p-6 bg-white">
+                            <h3 class="text-xl font-semibold text-gray-800">ConvoCraft</h3>
+                            <p class="mt-2 text-gray-600">An AI-powered voice companion that enables natural conversation.</p>
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">AI</span>
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Voice</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Project Card 3 -->
+                    <div class="project-card group relative rounded-lg overflow-hidden shadow-lg border border-gray-200">
+                        <img src="https://i.postimg.cc/SjF07JLf/Whats-App-Image-2025-08-16-at-03-38-52-d44f45f8.jpg" alt="Screenshot of the Bank Account Simulator project" class="project-image w-full h-64 object-cover transition-transform duration-300">
+                        <div class="project-overlay absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center opacity-0 transition-opacity duration-300">
+                            <a href="https://github.com/Hariteja431/PythonProjects/blob/main/BankAccountSimulator.py" target="_blank" class="text-white text-lg font-semibold border-2 border-white px-6 py-2 rounded-full hover:bg-white hover:text-black transition">View Project &rarr;</a>
+                        </div>
+                        <div class="p-6 bg-white">
+                            <h3 class="text-xl font-semibold text-gray-800">Bank Account Simulator</h3>
+                            <p class="mt-2 text-gray-600">Python CLI app using OOP for account creation and transactions.</p>
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                <span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Python</span>
+                                <span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded-full">OOP</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Project Card 4 -->
+                    <div class="project-card group relative rounded-lg overflow-hidden shadow-lg border border-gray-200">
+                        <img src="https://i.postimg.cc/Kcd4sfJJ/Whats-App-Image-2025-08-16-at-03-38-56-3a33341d.jpg" alt="Screenshot of the Student Management System project" class="project-image w-full h-64 object-cover transition-transform duration-300">
+                        <div class="project-overlay absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center opacity-0 transition-opacity duration-300">
+                            <a href="https://github.com/Hariteja431/PythonProjects/blob/main/StudentManagementSystem.py" target="_blank" class="text-white text-lg font-semibold border-2 border-white px-6 py-2 rounded-full hover:bg-white hover:text-black transition">View Project &rarr;</a>
+                        </div>
+                        <div class="p-6 bg-white">
+                            <h3 class="text-xl font-semibold text-gray-800">Student Management System</h3>
+                            <p class="mt-2 text-gray-600">Python console tool for managing student records with CRUD operations.</p>
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                <span class="bg-amber-100 text-amber-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Python</span>
+                                <span class="bg-amber-100 text-amber-800 text-xs font-medium px-2.5 py-0.5 rounded-full">CRUD</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Project Card 5 - NEW -->
+                    <div class="project-card group relative rounded-lg overflow-hidden shadow-lg border border-gray-200 md:col-span-2">
+                        <img src="https://i.postimg.cc/MKGD8TXK/n8n-workflow-for-instagram-automation.jpg" alt="n8n workflow for instagram automation" class="project-image w-full h-64 object-cover transition-transform duration-300">
+                        <div class="project-overlay absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center opacity-0 transition-opacity duration-300">
+                            <a href="https://haritejan8n.app.n8n.cloud/workflow/CDCt6ar2hs02xgKN" target="_blank" class="text-white text-lg font-semibold border-2 border-white px-6 py-2 rounded-full hover:bg-white hover:text-black transition">View Project &rarr;</a>
+                        </div>
+                        <div class="p-6 bg-white">
+                            <h3 class="text-xl font-semibold text-gray-800">Automated AI News Instagram Bot</h3>
+                            <p class="mt-2 text-gray-600">An end-to-end n8n workflow that fetches AI news, designs posts, and publishes them to Instagram automatically.</p>
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">n8n</span>
+                                <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Automation</span>
+                                <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">API</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hackathons & Achievements -->
+        <section id="hackathons" class="py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold font-jakarta text-gray-800">Hackathons & Achievements</h2>
+                    <p class="mt-2 text-lg text-gray-500">Competitive programming and awards.</p>
+                </div>
+                <div class="max-w-4xl mx-auto space-y-12 fade-in">
+                    <!-- Achievement 1 -->
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div class="md:col-span-1 text-center md:text-right">
+                            <h3 class="text-xl font-semibold text-blue-600">Agentic AI Day 2025</h3>
+                            <p class="text-gray-500">Google Cloud</p>
+                        </div>
+                        <div class="relative md:col-span-2 md:pl-10">
+                            <div class="absolute top-2 -left-2 h-full w-0.5 bg-gray-200 md:left-0"></div>
+                            <div class="absolute top-2 -left-4 w-4 h-4 bg-blue-600 rounded-full border-4 border-white md:-left-2"></div>
+                            <p>Built a rural farming prototype chatbot enabling farmers to ask queries in their native language.</p>
+                        </div>
+                    </div>
+                     <!-- Achievement 2 -->
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div class="md:col-span-1 text-center md:text-right">
+                            <h3 class="text-xl font-semibold text-blue-600">Raise Your Prompt 2025</h3>
+                            <p class="text-gray-500">lablab.ai</p>
+                        </div>
+                        <div class="relative md:col-span-2 md:pl-10">
+                            <div class="absolute top-2 -left-2 h-full w-0.5 bg-gray-200 md:left-0"></div>
+                            <div class="absolute top-2 -left-4 w-4 h-4 bg-blue-600 rounded-full border-4 border-white md:-left-2"></div>
+                            <p>Developed a Chat Market, an AI-powered conversational marketplace using Roam & LLama agents.</p>
+                        </div>
+                    </div>
+                     <!-- Achievement 3 -->
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div class="md:col-span-1 text-center md:text-right">
+                            <h3 class="text-xl font-semibold text-blue-600">Freestyle Vibe Hackathon</h3>
+                            <p class="text-gray-500">NIAT</p>
+                        </div>
+                        <div class="relative md:col-span-2 md:pl-10">
+                            <div class="absolute top-2 -left-2 h-full w-0.5 bg-gray-200 md:left-0"></div>
+                            <div class="absolute top-2 -left-4 w-4 h-4 bg-blue-600 rounded-full border-4 border-white md:-left-2"></div>
+                            <p>Created a 3D game with Three.js, securing 5th place among participants.</p>
+                        </div>
+                    </div>
+                     <!-- Achievement 4 -->
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div class="md:col-span-1 text-center md:text-right">
+                            <h3 class="text-xl font-semibold text-blue-600">Walmart Sparkathon 2025</h3>
+                            <p class="text-gray-500">Walmart</p>
+                        </div>
+                        <div class="relative md:col-span-2 md:pl-10">
+                            <div class="absolute top-2 -left-2 h-full w-0.5 bg-gray-200 md:left-0"></div>
+                            <div class="absolute top-2 -left-4 w-4 h-4 bg-blue-600 rounded-full border-4 border-white md:-left-2"></div>
+                            <p>Designed a shopping experience prototype to enhance customer engagement and retail efficiency.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section id="contact" class="py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold font-jakarta text-gray-800">Get In Touch</h2>
+                    <p class="mt-2 text-lg text-gray-500">I'm open to new opportunities and collaborations.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-12 fade-in">
+                    <div class="glassmorphism p-8 rounded-2xl shadow-lg">
+                        <form id="contact-form">
+                            <div class="mb-5">
+                                <label for="name" class="block mb-2 text-sm font-medium text-gray-700">Name</label>
+                                <input type="text" id="name" class="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                            <div class="mb-5">
+                                <label for="email" class="block mb-2 text-sm font-medium text-gray-700">Email</label>
+                                <input type="email" id="email" class="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                            <div class="mb-5">
+                                <label for="message" class="block mb-2 text-sm font-medium text-gray-700">Message</label>
+                                <textarea id="message" rows="4" class="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" required></textarea>
+                            </div>
+                            <button type="submit" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center">Send Message</button>
+                        </form>
+                    </div>
+                    <div class="flex flex-col justify-center space-y-6">
+                        <div class="flex items-center space-x-4">
+                            <i data-feather="map-pin" class="w-6 h-6 text-blue-600"></i>
+                            <p>East Godavari, India</p>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <i data-feather="phone" class="w-6 h-6 text-blue-600"></i>
+                            <p>+91 8309666345</p>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <i data-feather="mail" class="w-6 h-6 text-blue-600"></i>
+                            <p>tejanhari66666@gmail.com</p>
+                        </div>
+                        <div class="pt-6 flex space-x-4">
+                            <a href="https://www.linkedin.com/in/hariteja6/" target="_blank" class="text-gray-500 hover:text-blue-600 transition-transform transform hover:scale-110"><i data-feather="linkedin" class="w-8 h-8"></i></a>
+                            <a href="https://github.com/Hariteja431" target="_blank" class="text-gray-500 hover:text-blue-600 transition-transform transform hover:scale-110"><i data-feather="github" class="w-8 h-8"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400">
+        <div class="container mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center">
+            <p>&copy; <span id="copyright-year"></span> Hari Teja Jada. All Rights Reserved.</p>
+            <div class="flex space-x-4 mt-4 md:mt-0">
+                <a href="https://www.linkedin.com/in/hariteja6/" target="_blank" class="hover:text-white"><i data-feather="linkedin" class="w-5 h-5"></i></a>
+                <a href="https://github.com/Hariteja431" target="_blank" class="hover:text-white"><i data-feather="github" class="w-5 h-5"></i></a>
+                <a href="mailto:tejanhari66666@gmail.com" class="hover:text-white"><i data-feather="mail" class="w-5 h-5"></i></a>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        // --- CORE SETUP ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Feather Icons
+            feather.replace();
+
+            // Initialize all event listeners and dynamic content
+            setupScrollListeners();
+            setupMobileMenu();
+            startTypingAnimation();
+            createParticles();
+            setupIntersectionObserver();
+            setupContactForm();
+            updateCopyrightYear();
+        });
+
+        // --- DYNAMIC CONTENT & ANIMATIONS ---
+
+        function updateCopyrightYear() {
+            const yearElement = document.getElementById('copyright-year');
+            if (yearElement) {
+                yearElement.textContent = new Date().getFullYear();
+            }
+        }
+
+        function startTypingAnimation() {
+            const typingElement = document.getElementById('typing-animation');
+            if (!typingElement) return;
+
+            const roles = ["Full Stack Development", "Generative AI", "Problem Solving"];
+            let roleIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+
+            function type() {
+                const currentRole = roles[roleIndex];
+                let text = '';
+                if (isDeleting) {
+                    charIndex--;
+                    text = currentRole.substring(0, charIndex);
+                } else {
+                    charIndex++;
+                    text = currentRole.substring(0, charIndex);
+                }
+                typingElement.textContent = text;
+
+                let typeSpeed = isDeleting ? 50 : 150;
+
+                if (!isDeleting && charIndex === currentRole.length) {
+                    typeSpeed = 2000; // Pause at end of word
+                    isDeleting = true;
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    roleIndex = (roleIndex + 1) % roles.length;
+                    typeSpeed = 500; // Pause before new word
+                }
+                
+                setTimeout(type, typeSpeed);
+            }
+            type();
+        }
+
+        function createParticles() {
+            const particleContainer = document.getElementById('particle-container');
+            if (!particleContainer) return;
+
+            const particleCount = 20;
+            for (let i = 0; i < particleCount; i++) {
+                let particle = document.createElement('div');
+                particle.classList.add('particle');
+                let size = Math.random() * 10 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDelay = `${Math.random() * 25}s`;
+                particle.style.animationDuration = `${Math.random() * 20 + 15}s`;
+                particleContainer.appendChild(particle);
+            }
+        }
+
+        // --- UI INTERACTIONS ---
+
+        function setupScrollListeners() {
+            const header = document.getElementById('header');
+            const progressBar = document.getElementById('progress-bar');
+            
+            window.addEventListener('scroll', () => {
+                // Sticky Nav
+                if (window.scrollY > 50) {
+                    header.classList.add('sticky-nav');
+                } else {
+                    header.classList.remove('sticky-nav');
+                }
+
+                // Progress Bar
+                const scrollTotal = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (window.scrollY / scrollTotal) * 100;
+                progressBar.style.width = `${scrolled}%`;
+            });
+        }
+        
+        function setupMobileMenu() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const closeMobileMenuButton = document.getElementById('close-mobile-menu');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+            mobileMenuButton.addEventListener('click', () => mobileMenu.classList.remove('hidden'));
+            closeMobileMenuButton.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+            });
+        }
+
+        function setupContactForm() {
+            const form = document.getElementById('contact-form');
+            if (!form) return;
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault(); // Prevent actual form submission
+                // Here you would typically send the form data to a server or email service.
+                // For this example, we'll just show a confirmation.
+                alert('Thank you for your message! I will get back to you soon.');
+                form.reset();
+            });
+        }
+
+        // --- SCROLL-BASED ANIMATIONS ---
+        
+        function setupIntersectionObserver() {
+            const faders = document.querySelectorAll('.fade-in');
+            const appearOptions = {
+                threshold: 0.2,
+                rootMargin: "0px 0px -50px 0px"
+            };
+            
+            const appearOnScroll = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, appearOptions);
+
+            faders.forEach(fader => {
+                appearOnScroll.observe(fader);
+            });
+        }
+
+    </script>
+</body>
+</html>
